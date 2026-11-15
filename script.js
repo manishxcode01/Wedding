@@ -94,6 +94,20 @@ eventCards.forEach((_, index) => {
     renderEvents();
     restartEventTimer();
     window.addEventListener("resize", renderEvents);
+
+    const lightbox = document.querySelector(".lightbox");
+    const lightboxImage = document.querySelector(".lightbox-image");
+    const lightboxLabel = document.querySelector(".lightbox-label");
+    document.querySelectorAll(".gallery-tile").forEach((tile) => tile.addEventListener("click", () => {
+      const image = tile.querySelector("img");
+      lightboxImage.src = image.src;
+      lightboxImage.alt = image.alt;
+      lightboxLabel.textContent = tile.dataset.image;
+      lightbox.hidden = false;
+    }));
+    document.querySelector(".lightbox-close").addEventListener("click", () => { lightbox.hidden = true; });
+    lightbox.addEventListener("click", (event) => { if (event.target === lightbox) lightbox.hidden = true; });
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape") lightbox.hidden = true; });
   });
   eventDots.appendChild(dot);
 });
@@ -166,8 +180,12 @@ audio.addEventListener("ended", () => {
 audio.addEventListener("error", () => setMusicState(false));
 
 const lightbox = document.querySelector(".lightbox");
+const lightboxImage = document.querySelector(".lightbox-image");
 const lightboxLabel = document.querySelector(".lightbox-label");
 document.querySelectorAll(".gallery-tile").forEach((tile) => tile.addEventListener("click", () => {
+  const image = tile.querySelector("img");
+  lightboxImage.src = image.src;
+  lightboxImage.alt = image.alt;
   lightboxLabel.textContent = tile.dataset.image;
   lightbox.hidden = false;
 }));
